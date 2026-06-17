@@ -56,8 +56,13 @@ export interface FileStorage {
 
 /** Limits used by the upload endpoint to bound resource usage. */
 export const FILE_UPLOAD_LIMITS = {
-  /** Maximum bytes per file (10 MiB for MVP). */
-  maxFileSizeBytes: 10 * 1024 * 1024,
+  /**
+   * Maximum bytes per file (4 MiB for MVP). Kept below Vercel's ~4.5 MB
+   * serverless request-body limit so server-side uploads don't 413 before our
+   * own validation runs. Larger files would need Vercel Blob client-direct
+   * uploads — a separate slice.
+   */
+  maxFileSizeBytes: 4 * 1024 * 1024,
   /** Maximum number of files per request. */
   maxFilesPerRequest: 5,
   /** Allowed MIME types — kept narrow for safety. */
