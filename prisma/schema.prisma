@@ -1,12 +1,13 @@
 // Prisma schema for the 3D-print request constructor MVP.
-// SQLite for local dev; can be swapped to PostgreSQL later.
+// PostgreSQL — production-safe and used for local dev too (run a local or
+// managed Postgres and point DATABASE_URL at it).
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
