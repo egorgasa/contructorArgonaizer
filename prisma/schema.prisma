@@ -1,0 +1,94 @@
+// Prisma schema for the 3D-print request constructor MVP.
+// SQLite for local dev; can be swapped to PostgreSQL later.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model PrintRequest {
+  id            String   @id @default(cuid())
+  publicNumber  String   @unique
+  status        String   @default("new")
+  productType   String
+  clientName    String
+  clientEmail   String?
+  clientPhone   String?
+  // Full request payload as JSON (stored as text in SQLite; parsed in app code).
+  payload       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  notes         OperatorNote[]
+  statusHistory StatusHistory[]
+  files         RequestFile[]
+  quotes        RequestQuote[]
+
+  @@index([status, createdAt])
+  @@index([productType])
+}
+
+// Operator-prepared price/estimate for a request. Kept as its own table (not
+// fields on PrintRequest) so the quote lifecycle stays isolated and so multiple
+// versions can be stored later without a schema change. The current MVP keeps a
+// single live quote per request (the API updates the latest row).
+model RequestQuote {
+  id               String    @id @default(cuid())
+  requestId        String
+  request          PrintRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  priceCents       Int?
+  currency         String    @default("BYN")
+  productionDays   Int?
+  validUntil       DateTime?
+  operatorComment  String?
+  internalCostNote String?
+  status           String    @default("draft")
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([requestId, createdAt])
+}
+
+model RequestFile {
+  id          String   @id @default(cuid())
+  requestId   String
+  filename    String
+  storageKey  String   @unique
+  mimeType    String
+  sizeBytes   Int
+  uploadedAt  DateTime @default(now())
+
+  request     PrintRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId, uploadedAt])
+}
+
+model OperatorNote {
+  id        String   @id @default(cuid())
+  requestId String
+  body      String
+  createdAt DateTime @default(now())
+
+  request   PrintRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId, createdAt])
+}
+
+model StatusHistory {
+  id         String   @id @default(cuid())
+  requestId  String
+  fromStatus String
+  toStatus   String
+  reason     String?
+  createdAt  DateTime @default(now())
+
+  request    PrintRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId, createdAt])
+}

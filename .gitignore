@@ -1,0 +1,30 @@
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# uploaded user files (local storage backend)
+uploads/
+
+# env
+.env
+.env.local
+
+# prisma — keep migrations and migration_lock.toml under VCS, ignore local SQLite db
+*.db
+*.db-journal
+
+# package managers — we use pnpm; lock npm/yarn out
+package-lock.json
+yarn.lock
+
+# misc
+.DS_Store
+*.log
+.vscode/
+tsconfig.tsbuildinfo
+
+# local scratch / probe artifacts
+_probe.ts
+_tmp_*

@@ -1,0 +1,150 @@
+/* Scoped print styles for the printable submission view. Imported only by
+   the print route/components so it doesn't leak into the rest of the app. */
+
+/* Screen presentation: centered A4-like sheet on a neutral backdrop. */
+.print-shell {
+  background: #f3f4f6;
+  min-height: 100vh;
+  padding: 24px 16px;
+}
+
+.print-page {
+  background: #ffffff;
+  color: #111827;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 40px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.print-toolbar {
+  max-width: 800px;
+  margin: 0 auto 16px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.print-meta {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.print-field {
+  margin-bottom: 16px;
+}
+
+.print-field-label {
+  font-weight: 600;
+  font-size: 12px;
+  color: #374151;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.print-field-value {
+  font-size: 14px;
+  color: #111827;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.print-field-value--empty {
+  color: #9ca3af;
+}
+
+.print-color-swatch {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.print-image {
+  max-width: 100%;
+  max-height: 320px;
+  height: auto;
+  display: block;
+  margin-top: 4px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+.print-image-meta {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.print-divider {
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+  margin: 16px 0;
+}
+
+.print-static-text {
+  color: #374151;
+  white-space: pre-wrap;
+}
+
+.print-heading-1 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 16px 0 8px 0;
+}
+
+.print-heading-2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 14px 0 6px 0;
+}
+
+.print-heading-3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 12px 0 6px 0;
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-shell {
+    background: #ffffff !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  .print-page {
+    box-shadow: none !important;
+    border: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .print-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100%;
+    page-break-inside: avoid;
+  }
+}
